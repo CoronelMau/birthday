@@ -2,6 +2,9 @@
 #
 .DS_Store
 
+#Firebase connection
+src/utils/firebase.js
+
 # Xcode
 #
 build/
