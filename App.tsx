@@ -14,7 +14,7 @@ import {auth} from './src/utils/firebase';
 import Auth from './src/components/auth';
 
 export default function App() {
-  const [user, setUser] = useState(undefined);
+  const [user, setUser] = useState<any>();
 
   useEffect(() => {
     auth.onAuthStateChanged(res => {
