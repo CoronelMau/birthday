@@ -47,9 +47,7 @@ export default function RegisterForm({changeForm}) {
         style={[styles.input, formError.email && styles.error]}
         placeholder="Email"
         placeholderTextColor="#969696"
-        onChange={e =>
-          setFormData({...formData, email: e.nativeEvent.text.toLowerCase()})
-        }
+        onChange={e => setFormData({...formData, email: e.nativeEvent.text})}
       />
       <TextInput
         style={[styles.input, formError.password && styles.error]}
