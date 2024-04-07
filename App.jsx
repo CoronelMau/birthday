@@ -8,7 +8,7 @@ import Auth from './src/components/auth';
 import ListBirthday from './src/components/ListBirthday';
 
 export default function App() {
-  const [user, setUser] = useState<any>();
+  const [user, setUser] = useState();
 
   useEffect(() => {
     auth.onAuthStateChanged(res => {
@@ -24,7 +24,7 @@ export default function App() {
     <>
       <StatusBar barStyle={'light-content'} />
       <SafeAreaView style={styles.background}>
-        {user ? <ListBirthday /> : <Auth />}
+        {user ? <ListBirthday user={user} /> : <Auth />}
       </SafeAreaView>
     </>
   );
