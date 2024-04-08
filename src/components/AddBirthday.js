@@ -15,7 +15,7 @@ import 'firebase/firestore';
 import {db} from '../utils/firebase';
 import {addDoc, collection} from 'firebase/firestore';
 
-export default function AddBirthday({user, setShowList}) {
+export default function AddBirthday({user, setShowList, setReloadData}) {
   const [isDataPickerVisible, setIsDataPickerVisible] = useState(false);
   const [formData, setFormData] = useState({});
   const [formErrors, setFormErrors] = useState({});
@@ -53,8 +53,8 @@ export default function AddBirthday({user, setShowList}) {
       console.log('Errors');
     } else {
       formData.date.setYear(0);
-      const docRef = await addDoc(collection(db, user.uid), formData);
-      console.log(docRef.id);
+      await addDoc(collection(db, user.uid), formData);
+      setReloadData(true);
       setShowList(true);
     }
     setFormErrors(errors);
