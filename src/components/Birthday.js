@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, StyleSheet, TouchableOpacity} from 'react-native';
 
-export default function Birthday({birthday}) {
+export default function Birthday({birthday, deleteBirthday}) {
   const past = birthday.days > 0 ? true : false;
 
   const infoDay = () => {
@@ -11,7 +11,6 @@ export default function Birthday({birthday}) {
     }
     return (
       <Text style={{color: '#fff', fontWeight: 'bold'}}>
-        {' '}
         {Math.abs(birthday.days)} days
       </Text>
     );
@@ -26,7 +25,11 @@ export default function Birthday({birthday}) {
           : birthday.days === 0
           ? styles.today
           : styles.current,
-      ]}>
+      ]}
+      onPress={() => {
+        deleteBirthday(birthday);
+        console.log(birthday.id);
+      }}>
       <Text
         style={styles.username}>{`${birthday.name} ${birthday.lastName}`}</Text>
       {past ? <Text>Passed</Text> : infoDay(birthday.days)}

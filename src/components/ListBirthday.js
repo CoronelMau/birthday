@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Text, ScrollView} from 'react-native';
-import {getDocs, collection} from 'firebase/firestore';
+import {View, StyleSheet, Alert, ScrollView} from 'react-native';
+import {getDocs, collection, deleteDoc, doc} from 'firebase/firestore';
 import moment from 'moment';
 
 import {db} from '../utils/firebase';
@@ -23,8 +23,9 @@ export default function ListBirthday({user}) {
     const fetchData = async () => {
       const itemsArray = [];
       const querySnap = await getDocs(collection(db, user.uid));
-      querySnap.forEach(doc => {
-        const data = doc.data();
+      querySnap.forEach(document => {
+        const data = document.data();
+        data.id = document.id;
         itemsArray.push(data);
       });
       formatData(itemsArray);
@@ -41,7 +42,7 @@ export default function ListBirthday({user}) {
       second: 0,
       millisecond: 0,
     });
-
+    console.log(items);
     const tempFutureBirthArray = [];
     const tempPastBirthArray = [];
 
@@ -67,15 +68,44 @@ export default function ListBirthday({user}) {
     setPastBirthdays(tempPastBirthArray);
   };
 
+  const deleteBirthday = birthday => {
+    Alert.alert(
+      'Delete birthday',
+      `Are you sure to delete ${birthday.name}'s birthday?`,
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          onPress: async () => {
+            await deleteDoc(doc(db, user.uid, birthday.id));
+            setReloadData(true);
+          },
+        },
+      ],
+      {cancelable: false},
+    );
+  };
+
   return (
     <View style={styles.container}>
       {showList ? (
         <ScrollView styles={styles.scrollView}>
           {futureBirthdays.map((item, index) => (
-            <Birthday key={index} birthday={item} />
+            <Birthday
+              key={index}
+              birthday={item}
+              deleteBirthday={deleteBirthday}
+            />
           ))}
           {pastBirthdays.map((item, index) => (
-            <Birthday key={index} birthday={item} />
+            <Birthday
+              key={index}
+              birthday={item}
+              deleteBirthday={deleteBirthday}
+            />
           ))}
         </ScrollView>
       ) : (
